@@ -1,13 +1,24 @@
 <script setup>
-defineProps(['title'])
+//defineProps(['title','id','body']);
+defineProps({
+  title: String,
+  id: Number,
+  body: {
+    type: String,
+    default: 'No description provided'
+  },
+
+});
+
 </script>
 
 <template>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ title }}</h5>
+            <h5 class="card-title">
+            {{ id }} -{{ title }}</h5>
             <p class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                {{ body }}
             </p>
         </div>
     </div>

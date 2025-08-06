@@ -11,12 +11,22 @@ import ButtonCounter from './components/ButtonCounter.vue';
     <ButtonCounter></ButtonCounter>
     <BlogPost
     title="Post 1"
+    :id="1"
+    body="descripción del post 1"
+    
+  
     />
      <BlogPost
     title="Post 2"
+    :id="2"
+    body="descripción del post 2"
+
     />
      <BlogPost
     title="Post 3"
+    :id="3"
+    body="descripción del post 3"
+    
     />
   </div>
 </template>
