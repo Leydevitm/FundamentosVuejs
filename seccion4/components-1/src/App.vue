@@ -2,12 +2,13 @@
 import { computed, ref } from 'vue';
 import BlogPost from './components/BlogPost.vue';
 import PaginatePost from './components/PaginatePost.vue';
-
+import LoadingSpinner from './components/LoadingSpinner.vue';
 
 const posts = ref([]);
 const postXpage =10;
 const inicio = ref(0);
 const fin = ref(postXpage);
+const loading=ref(true);
 
 const favorito = ref("");
 
@@ -32,15 +33,24 @@ fetch('https://jsonplaceholder.typicode.com/posts')
   .then(data => {
     
     posts.value = data;
+  })
+  .catch(error => {
+    console.error('Error fetching posts:', error);
+  })
+  .finally(() => {
+    setTimeout(() => {
+      loading.value = false;
+    }, 2000); // Simulate a delay for loading
   });
 
-  const maxLength = computed(()=>posts.value.length);
+  const maxLength = computed(() => posts.value.length);
 
 </script>
 
 
 <template>
-  <div class="container">
+  <LoadingSpinner v-if="loading"/>
+  <div class="container" v-else>
     <h1>Leivy</h1>
     <h2>Mis Post favoritos: {{ favorito }}</h2>
 
