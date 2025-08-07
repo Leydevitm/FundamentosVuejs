@@ -16,7 +16,7 @@ const increment = () => {
 button {
   background-color: blue;
   color: white;
-  border: none;
+  border: 5px;
   padding: 10px 20px;
   cursor: pointer;
 }

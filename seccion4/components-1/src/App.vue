@@ -1,17 +1,22 @@
 <script setup>
+import { ref } from 'vue';
 import BlogPost from './components/BlogPost.vue';
 import ButtonCounter from './components/ButtonCounter.vue';
-import { ref } from 'vue';
 
-const posts = ref([
-  { id: 1, title: 'Post 1', body: 'Descripción del post 1' },
-  { id: 2, title: 'Post 2', body: 'Descripción del post 2' },
-  { id: 3, title: 'Post 3', body: 'Descripción del post 3' }
-]);
+import PaginatePost from './components/PaginatePost.vue';
+
+const posts = ref([]);
 const favorito = ref("");
 const cambiarFavorito=(title)=>{
   favorito.value=title;
 }
+fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(response => response.json())
+  .then(data => {
+    
+    posts.value = data;
+  });
+
 </script>
 
 
@@ -19,13 +24,16 @@ const cambiarFavorito=(title)=>{
   <div class="container">
     <h1>Leivy</h1>
     <h2>Mis Post favoritos: {{ favorito }}</h2>
+
+    <PaginatePost class="mb-2"/>
     <BlogPost
-      v-for="post in posts"
+      v-for="post in posts.slice(0, 10)"
       :key="post.id"
       :title="post.title"
       :id="post.id"
     :body="post.body"
-    @cambiarFavorito="cambiarFavorito"
+    :cambiarFavorito="cambiarFavorito"
+    class="mb-2"
     ></BlogPost>
 
   </div>
