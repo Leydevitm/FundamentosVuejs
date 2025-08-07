@@ -21,7 +21,7 @@ getData();
     <h1>Pokeemons</h1>
     <ul>
         <li v-for="poke in pokemons">
-            <router-link :to="`/pokemons/${poke.name}`">
+            <router-link :to="`/pokeemons/${poke.name}`">
                  {{ poke.name }}
             </router-link>
            
