@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import BlogPost from './components/BlogPost.vue';
 import PaginatePost from './components/PaginatePost.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
@@ -28,20 +28,38 @@ const prev=()=>{
     fin.value += - postXpage;
 
 }
-fetch('https://jsonplaceholder.typicode.com/posts')
-  .then(response => response.json())
-  .then(data => {
+ onMounted(async() => {
+  // loading.value=true;
+  try {
+    const res =await fetch('https://jsonplaceholder.typicode.com/posts')
+    posts.value = await res.json();
+  
+  } catch (error) {
+    console-error('Error fetching posts:', error);
     
-    posts.value = data;
-  })
-  .catch(error => {
-    console.error('Error fetching posts:', error);
-  })
-  .finally(() => {
+  }
+  finally {
     setTimeout(() => {
       loading.value = false;
     }, 2000); // Simulate a delay for loading
-  });
+  }
+  
+});
+
+// fetch('https://jsonplaceholder.typicode.com/posts')
+//   .then(response => response.json())
+//   .then(data => {
+    
+//     posts.value = data;
+//   })
+//   .catch(error => {
+//     console.error('Error fetching posts:', error);
+//   })
+//   .finally(() => {
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 2000); 
+//   });
 
   const maxLength = computed(() => posts.value.length);
 
