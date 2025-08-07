@@ -1,7 +1,13 @@
-
 <script setup>
 import BlogPost from './components/BlogPost.vue';
 import ButtonCounter from './components/ButtonCounter.vue';
+import { ref } from 'vue';
+
+const posts = ref([
+  { id: 1, title: 'Post 1', body: 'Descripción del post 1' },
+  { id: 2, title: 'Post 2', body: 'Descripción del post 2' },
+  { id: 3, title: 'Post 3', body: 'Descripción del post 3' }
+]);
 </script>
 
 
@@ -9,25 +15,15 @@ import ButtonCounter from './components/ButtonCounter.vue';
   <div class="container">
     <h1>Leivy</h1>
     <ButtonCounter></ButtonCounter>
-    <BlogPost
-    title="Post 1"
-    :id="1"
-    body="descripción del post 1"
-    
-  
-    />
-     <BlogPost
-    title="Post 2"
-    :id="2"
-    body="descripción del post 2"
 
-    />
-     <BlogPost
-    title="Post 3"
-    :id="3"
-    body="descripción del post 3"
-    
-    />
+    <BlogPost 
+    v-for="post in posts"
+    :key="post.id"
+    :title="post.title"
+    :id="post.id"
+    :body="post.body"
+    ></BlogPost>
+
   </div>
 </template>
 
