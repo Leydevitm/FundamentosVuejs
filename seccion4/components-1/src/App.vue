@@ -1,14 +1,31 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BlogPost from './components/BlogPost.vue';
-import ButtonCounter from './components/ButtonCounter.vue';
-
 import PaginatePost from './components/PaginatePost.vue';
 
+
 const posts = ref([]);
+const postXpage =10;
+const inicio = ref(0);
+const fin = ref(postXpage);
+
 const favorito = ref("");
+
 const cambiarFavorito=(title)=>{
   favorito.value=title;
+};
+
+const next=()=>{
+  if(fin.value < posts.value.length){
+    inicio.value= inicio.value +postXpage;
+    fin.value= fin.value +postXpage;
+  }
+}
+const prev=()=>{
+  
+    inicio.value += - postXpage;
+    fin.value += - postXpage;
+
 }
 fetch('https://jsonplaceholder.typicode.com/posts')
   .then(response => response.json())
@@ -16,6 +33,8 @@ fetch('https://jsonplaceholder.typicode.com/posts')
     
     posts.value = data;
   });
+
+  const maxLength = computed(()=>posts.value.length);
 
 </script>
 
@@ -25,9 +44,18 @@ fetch('https://jsonplaceholder.typicode.com/posts')
     <h1>Leivy</h1>
     <h2>Mis Post favoritos: {{ favorito }}</h2>
 
-    <PaginatePost class="mb-2"/>
+
+    <PaginatePost 
+    
+    @next="next" 
+    @prev="prev" 
+    :inicio="inicio" 
+    :fin="fin" 
+    :maxLength="maxLength"
+    class="mb-2"
+    />
     <BlogPost
-      v-for="post in posts.slice(0, 10)"
+      v-for="post in posts.slice(inicio, fin)"
       :key="post.id"
       :title="post.title"
       :id="post.id"
