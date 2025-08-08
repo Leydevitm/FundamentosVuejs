@@ -20,6 +20,8 @@ getData('https://pokeapi.co/api/v2/pokemon');
            
         </li>
     </ul>
+    <button :disabled="!data.previous" class="btn btn-success  me-2"  @click="getData(data.previous)" >Previous</button>
+    <button :disabled="!data.next" class="btn btn-primary" @click="getData(data.next)">Next</button>
 
     </div>
    
