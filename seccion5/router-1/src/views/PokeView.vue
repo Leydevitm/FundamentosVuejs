@@ -1,37 +1,23 @@
 <script setup>
-
-import axios from 'axios'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-
-const poke=ref({})
-
+import { useRoute,useRouter } from 'vue-router'
+import{useGetData} from '@/composables/getData';
 
 const route = useRoute()
 const router = useRouter()
 
+const { getData, data, loading,error } = useGetData();
+
 const back=()=>{
     router.push('/Pokeemons')
 }
-const getData = async () => {
-  try {
-    const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${route.params.name}`)
-    // pokemons.value = data.results
-    console.log(data);
-    poke.value=data;
-  } catch (error) {
-    console.error('Error fetching Pokemons:', error)
-    poke.value=null;
-  }
-}
-
-getData();
+getData(`https://pokeapi.co/api/v2/pokemon/${route.params.name}`);
 </script>
 
 <template>
-    <div v-if="poke">
-         <img :src="poke.sprites?.front_default">
+    <p v-if="loading">Cargando Infromacion...</p>
+    <div class="alert alert-danger mt-2" v-if="error">{{ error }}</div>
+    <div v-if="data">
+         <img :src="data.sprites?.front_default">
     <h1>Poke name: {{ $route.params.name }}</h1>
     </div>
     <h1 v-else>

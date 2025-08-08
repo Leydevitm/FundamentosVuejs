@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const useGetData=()=>{
     const data = ref(null);
+    const error=ref(null);
     const loading=ref(true);
     const getData=async (url) => {
     loading.value = true;
@@ -12,12 +13,13 @@ export const useGetData=()=>{
     data.value = res.data;
    
   
-  } catch (error) {
-    console.error('Error fetching Pokemons:', error)
+  } catch (e) {
+    console.error('Error fetching Pokemons:', e)
+    error.value="Error de servidor"
   }finally {
     loading.value = false;
   }
 
 }
-return { getData, data, loading }
+return { getData, data, loading ,error}
 }
