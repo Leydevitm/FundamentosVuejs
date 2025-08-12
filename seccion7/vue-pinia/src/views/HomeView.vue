@@ -1,9 +1,10 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import {useCounterStore} from '@/store/counter.js'
+const useCounter=useCounterStore()
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <h1>HOME counter: {{ useCounter.count }}</h1>
+  <h2>Double: {{ useCounter.double}}</h2>
+  <button @click="useCounter.increment">Increment</button>
 </template>
