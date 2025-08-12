@@ -24,7 +24,7 @@ const {remove} = useFavoritos
             <router-link class="btn btn-sm btn-outline-success me-2" :to="`/pokeemons/${poke.name}`">Mas Informacion</router-link>
         </div>
         <div>
-            <router-link class="btn btn-sm btn-danger" @click="remove(poke.id)">Eliminar</router-link>
+            <button class="btn btn-sm btn-danger" @click="remove(poke.id)">Eliminar</button>
         </div>
         </li>
     </ul>
