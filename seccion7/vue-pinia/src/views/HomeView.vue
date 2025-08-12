@@ -1,10 +1,13 @@
 <script setup>
-import {useCounterStore} from '@/store/counter.js'
-const useCounter=useCounterStore()
+import {useCounterStore} from '@/store/counter.js';
+import { storeToRefs } from 'pinia';
+const useCounter=useCounterStore();
+const {increment} = useCounter;
+const {count,double} = storeToRefs(useCounter)
 </script>
 
 <template>
-  <h1>HOME counter: {{ useCounter.count }}</h1>
-  <h2>Double: {{ useCounter.double}}</h2>
-  <button @click="useCounter.increment">Increment</button>
+  <h1>HOME counter: {{ count }}</h1>
+  <h2>Double: {{ double}}</h2>
+  <button @click="increment">Increment</button>
 </template>
