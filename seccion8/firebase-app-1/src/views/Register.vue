@@ -13,6 +13,7 @@ const handleSubmit =async ()=>{
     if(!email.value || password.value.length<6){
         return alert('llena los campos');
     }
+    
     await userStore.registerUser(email.value,password.value)
     router.push('/')
 }
