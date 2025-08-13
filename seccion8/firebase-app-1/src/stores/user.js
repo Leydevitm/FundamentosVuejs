@@ -14,7 +14,7 @@ export const useUserStore = defineStore('userStore',{
                     email,
                     password
                 );
-                console.log(user);
+               this.userData={email:user.email,uid:user.uid}
             } catch (error) {
                 console.log(error);
             }

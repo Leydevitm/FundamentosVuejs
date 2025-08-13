@@ -1,16 +1,20 @@
 <script setup>
 import { ref } from 'vue';
 import {useUserStore} from '../stores/user'
+import {useRouter} from 'vue-router'
 
+const router = useRouter();
 const userStore = useUserStore();
+
 const email = ref('ley@gmail.com')
 const password = ref('123456')
 
-const handleSubmit = ()=>{
+const handleSubmit =async ()=>{
     if(!email.value || password.value.length<6){
         return alert('llena los campos');
     }
-    userStore.registerUser(email.value,password.value)
+    await userStore.registerUser(email.value,password.value)
+    router.push('/')
 }
 </script>
 
