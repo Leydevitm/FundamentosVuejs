@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 import {useUserStore} from '../stores/user'
-import {useRouter} from 'vue-router'
+//import {useRouter} from 'vue-router'
 
-const router = useRouter();
+//const router = useRouter();
 const userStore = useUserStore();
 
-const email = ref('ley@gmail.com')
-const password = ref('123456')
+const email = ref('ley6@gmail.com')
+const password = ref('candelaria')
 
 const handleSubmit =async ()=>{
     if(!email.value || password.value.length<6){
@@ -15,7 +15,7 @@ const handleSubmit =async ()=>{
     }
     
     await userStore.loginUser(email.value,password.value)
-    router.push('/')
+   /// router.push('/')
 }
 </script>
 
