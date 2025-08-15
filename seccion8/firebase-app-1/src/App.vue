@@ -1,4 +1,4 @@
-import { RouterView } from 'vue-router';
+
 <script setup>
 import { useUserStore } from './stores/user';
 const userStore = useUserStore();
