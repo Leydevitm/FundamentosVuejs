@@ -32,7 +32,7 @@ export const useDatabaseStore = defineStore('database', {
                 });
                 });
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error( error);
             }finally{
                 this.loadingDoc = false;
             }
