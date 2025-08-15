@@ -10,7 +10,14 @@ databaseStore.getUrls();
 <template>
     <div>
         <h1>Home</h1>
-       <pre>{{ userStore.userData?.email }}</pre>
+       <p>{{ userStore.userData?.email }}</p>
+       <ul>
+        <li v-for="item of databaseStore.documents" :key="item.id">
+          {{ item.id}} - {{ item.nombre }}
+          <br>
+          {{ item.short }}
+        </li>
+       </ul>
     </div>
 
 </template>
