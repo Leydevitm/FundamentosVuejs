@@ -12,7 +12,8 @@ import router from '../router';
 export const useUserStore = defineStore('userStore',{
     state:()=>({
         userData:null,
-        loadingUser:false
+        loadingUser:false,
+        loadingUserSession:false
     }),
     actions: {
         async registerUser(email,password){
