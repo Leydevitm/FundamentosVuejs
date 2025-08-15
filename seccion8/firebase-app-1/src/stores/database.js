@@ -1,8 +1,10 @@
-import {collection,addDoc,doc,getDoc,deleteDoc, query,where,getDocs} from 'firebase/firestore/lite';
+import {collection,addDoc,doc,getDoc,deleteDoc, query,where,getDocs,updateDoc} from 'firebase/firestore/lite';
 import { defineStore } from 'pinia';
 import {db} from '../firebaseConfig';
 import {auth} from '../firebaseConfig' 
 import {nanoid} from 'nanoid'
+import router from '../router';
+
 
 export const useDatabaseStore = defineStore('database', {
     state: () => ({
@@ -51,6 +53,39 @@ export const useDatabaseStore = defineStore('database', {
                 console.error("Error adding document: ", error);
             }finally{
 
+            }
+        },
+        async leerUrl(id) {
+            try {
+                const docRef = doc(db, 'urls', id);
+                const docSpan = await getDoc(docRef);
+                 if (!docSpan.exists()) {
+                    throw new Error("no existe el doc")
+                }
+                if (docSpan.data().user !== auth.currentUser.uid) {
+                    throw new Error("no tienes permiso para eliminar este doc")
+                }
+                return docSpan.data().name;
+
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async updateUrl(id, name) {
+            try {
+            const docRef = doc(db, 'urls', id);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+                throw new Error("no existe el doc")
+            }
+            if (docSnap.data().user !== auth.currentUser.uid) {
+                throw new Error("no tienes permiso para eliminar este doc")
+            }
+            await updateDoc(docRef, { name });
+            this.documents = this.documents.map(item => item.id === id ? { ...item, name } : item);
+            router.push('/');
+            } catch (error) {
+                console.error("Error updating document: ", error);
             }
         },
         async deleteUrl(id) {
