@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
 import {useUserStore} from '../stores/user'
-import { reactive, computed } from 'vue';
+import { reactive } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-import { validatePassword } from 'firebase/auth';
-
+import {message} from 'ant-design-vue';
 const userStore = useUserStore();
 
 const formState = reactive<FormState>({
@@ -25,15 +23,22 @@ const validatePass = async(_rulee,value)=>{
 
 const onFinish = async (values: any) => {
   console.log('Success:', values);
-   await userStore.registerUser(formState.email, formState.password)
-   alert("Verification email sent!")
+   const respuesta = await userStore.registerUser(formState.email, formState.password)
+   if(!respuesta){
+    return message.success("Verification email sent!")
+  }
+  switch(respuesta){
+     case 'auth/email-already-in-use':
+        message.error('Email already in use');
+        break;
+      default:
+        message.error('An error occurred');
+        break;
+  }
 };
-// const onFinishFailed = (errorInfo: any) => {
-//   console.log('Failed:', errorInfo);
-// };
-// const disabled = computed(() => {
-//   return !(formState.email && formState.password);
-// });
+const onFinishFailed = (errorInfo: any) => {
+  console.log('Failed:', errorInfo);
+};
 
 
 </script>
@@ -49,7 +54,7 @@ const onFinish = async (values: any) => {
         autocomplete="off"
         layout="vertical"
         @finish="onFinish"
-        @finishFailed="onFinishFailed"
+  @finishFailed="onFinishFailed"
         >
         <a-form-item
         name="email"

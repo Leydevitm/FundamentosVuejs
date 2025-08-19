@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import {useUserStore} from '../stores/user'
 import { reactive, computed } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-
+import {message} from 'ant-design-vue';
 const userStore = useUserStore();
 
 const formState = reactive<FormState>({
@@ -13,7 +13,19 @@ const formState = reactive<FormState>({
 
 const onFinish = async (values: any) => {
   console.log('Success:', values);
-   await userStore.loginUser(formState.email, formState.password)
+  const respuesta = await userStore.loginUser(formState.email, formState.password);
+
+  if(!respuesta){
+    return 
+  }
+  switch(respuesta){
+     case 'auth/invalid-credential':
+        message.error('email and password are incorrect');
+        break;
+      default:
+        message.error('An error occurred');
+        break;
+  }
 };
 const onFinishFailed = (errorInfo: any) => {
   console.log('Failed:', errorInfo);
