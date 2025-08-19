@@ -1,32 +1,100 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import {useUserStore} from '../stores/user'
-//import {useRouter} from 'vue-router'
+import { reactive, computed } from 'vue';
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { validatePassword } from 'firebase/auth';
 
-//const router = useRouter();
 const userStore = useUserStore();
 
-const email = ref('ley@gmail.com')
-const password = ref('123456')
+const formState = reactive<FormState>({
+  email: '',
+  password: '',
+  repassword: '',
+});
 
-const handleSubmit =async ()=>{
-    if(!email.value || password.value.length<6){
-        return alert('llena los campos');
+const validatePass = async(_rulee,value)=>{
+    if(value===''){
+        return Promise.reject('Repeat password is required');
     }
-    
-    await userStore.registerUser(email.value,password.value)
-    //router.push('/')
+    if(value !== formState.password){
+        return Promise.reject('Passwords do not match');
+    }
+    return Promise.resolve();
 }
+
+const onFinish = async (values: any) => {
+  console.log('Success:', values);
+   await userStore.registerUser(formState.email, formState.password)
+   alert("Verification email sent!")
+};
+// const onFinishFailed = (errorInfo: any) => {
+//   console.log('Failed:', errorInfo);
+// };
+// const disabled = computed(() => {
+//   return !(formState.email && formState.password);
+// });
+
+
 </script>
 
 <template>
-    <div>
-        <h1>Register</h1>
-       <form @submit.prevent="handleSubmit" action="">
-        <input type="email" placeholder="Email" v-model="email">
-        <input type="password" placeholder="Password" v-model="password">
-        <button type="submit" :disabled="userStore.loadingUser">Submit</button>
-       </form>
-    </div>
+    <a-row>
+      <a-col :xs="{span:24}" :sm="{span:12, offset:6}">
+
+     
+       <a-form 
+       :model="formState"
+        name="basicLogin"
+        autocomplete="off"
+        layout="vertical"
+        @finish="onFinish"
+        @finishFailed="onFinishFailed"
+        >
+        <a-form-item
+        name="email"
+        label="Email"
+        :rules="[{required:true,type:'email', whitespace:true,message:'Please input yur email!'}]"
+        >
+        <a-input v-model:value="formState.email">
+            <template #prefix>
+          <UserOutlined class="site-form-item-icon" />
+        </template>
+        </a-input>
+        </a-form-item>
+
+        <a-form-item
+        name="password"
+        label="password"
+        :rules="[{required:true,min:6,whitespace:true,message:'Please input yur password!'}]"
+        >
+        <a-input-password v-model:value="formState.password">
+            <template #prefix>
+          <LockOutlined class="site-form-item-icon" />
+        </template>
+        </a-input-password>
+        </a-form-item>
+
+         <a-form-item
+        name="repassword"
+        label="repeat password"
+        :rules="[{validator:validatePass}]"
+        >
+        <a-input-password v-model:value="formState.repassword">
+            <template #prefix>
+          <LockOutlined class="site-form-item-icon" />
+        </template>
+        </a-input-password>
+        </a-form-item>
+
+
+        <a-form-item>
+            <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser">Ingresar</a-button>
+        </a-form-item>
+
+       </a-form>
+        </a-col>
+       </a-row>
+   
 
 </template>
