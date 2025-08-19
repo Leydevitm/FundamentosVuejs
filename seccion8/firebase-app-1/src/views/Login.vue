@@ -75,7 +75,7 @@ const onFinishFailed = (errorInfo: any) => {
         </a-form-item>
 
         <a-form-item>
-            <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser">Ingresar</a-button>
+            <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser" :loading="userStore.loadingUser">Ingresar</a-button>
         </a-form-item>
 
        </a-form>
