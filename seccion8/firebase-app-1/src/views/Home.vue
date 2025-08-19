@@ -21,6 +21,8 @@ const handleSubmit=()=>{
         <h1>Home</h1>
        <p>{{ userStore.userData?.email }}</p>
 
+       <add-form></add-form>
+
         <form @submit.prevent="handleSubmit">
             <input type="text" placeholder="Ingrese URL" v-model="url">
             <button type="submit" >Agregar</button>
