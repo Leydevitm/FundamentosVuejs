@@ -1,7 +1,6 @@
 <script setup>
 import { useUserStore } from '../stores/user';
 import {useDatabaseStore} from '../stores/database';
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 
@@ -9,11 +8,8 @@ const  userStore  = useUserStore();
 const databaseStore  = useDatabaseStore();
 const router = useRouter();
 databaseStore.getUrls();
-const url = ref('');
-const handleSubmit=()=>{
-   databaseStore.addUrl(url.value);
-}
 
+databaseStore.getUrls();
 </script>
 
 <template>
@@ -23,24 +19,22 @@ const handleSubmit=()=>{
 
        <add-form></add-form>
 
-        <form @submit.prevent="handleSubmit">
-            <input type="text" placeholder="Ingrese URL" v-model="url">
-            <button type="submit" >Agregar</button>
-        </form>
-
        <p v-if="databaseStore.loadingDoc">Cargando...</p>
-       <ul v-else>
-        <li v-for="item of databaseStore.documents" :key="item.id">
-          {{ item.id}} 
-          <br>
-          {{ item.name }}
-          <br>
-          {{ item.short }}
-          <br>
-          <button @click="databaseStore.deleteUrl(item.id)">Eliminar</button>
-          <button @click="router.push(`/editar/${item.id}`)">Editar</button>
-        </li>
-       </ul>
+       <a-space direction="vertical" v-if="!databaseStore.loadingDoc"  style="width:100%">
+         <a-card
+       v-for="item of databaseStore.documents" :key="item.id"
+       :title="item.short"
+      
+       >
+       <template #extra>
+      <a-space>
+        <a-button danger @click="databaseStore.deleteUrl(item.id)">Eliminar</a-button>
+       <a-button type="primary" @click="router.push(`/editar/${item.id}`)">Editar</a-button>
+        </a-space>
+       </template>
+       <p>  {{ item.name }}</p>
+    </a-card>
+       </a-space>
     </div>
 
 </template>

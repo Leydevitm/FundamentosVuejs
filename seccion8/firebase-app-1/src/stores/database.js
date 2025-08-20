@@ -9,7 +9,8 @@ import router from '../router';
 export const useDatabaseStore = defineStore('database', {
     state: () => ({
         documents: [],
-        loadingDoc:false
+        loadingDoc:false,
+        loading:false
     }),
     actions: {
         async getUrls() {
@@ -38,6 +39,7 @@ export const useDatabaseStore = defineStore('database', {
             }
         },
         async addUrl(name) {
+            this.loading = true;
             try {
                 const objetoDoc = {
                     name:name,
@@ -50,9 +52,10 @@ export const useDatabaseStore = defineStore('database', {
                         id: docRef.id,  
                     });
             } catch (error) {
-                console.error("Error adding document: ", error);
+                console.error("Error adding document: ", error.code);
+                return error.code;
             }finally{
-
+              this.loading = false;
             }
         },
         async leerUrl(id) {

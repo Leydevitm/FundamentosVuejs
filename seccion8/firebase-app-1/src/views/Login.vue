@@ -80,6 +80,7 @@ const onFinishFailed = (errorInfo: any) => {
 
        </a-form>
         </a-col>
+        
        </a-row>
    
 
