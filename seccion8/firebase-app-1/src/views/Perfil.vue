@@ -1,16 +1,40 @@
 <script lang="ts" setup>
 import { useUserStore } from '../stores/user'
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { UserOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+
 const userStore = useUserStore();
+const fileList = ref([]);
+
+const beforeUpload=(file)=>{
+    fileList.value=[...fileList.value,file];
+    return false;
+}
+const handleChange = info=>{
+    let resFileList = [...info.fileList];
+    resFileList=resFileList.slice(-1)
+     resFileList=resFileList.map(file=>{
+        if(file.response){
+            file.url = file.response.url;
+        }
+        return file;
+     });
+     fileList.value = resFileList
+}
+
 const onFinish = async (values) => {
-  // console.log('Success:', values);
-  const respuesta = await userStore.updateUser(userStore.userData.displayName);
+const respuesta = await userStore.updateUser(userStore.userData.displayName);
+
+fileList.value.forEach(file => {
+console.log(file);
+});
   if(!respuesta){
     return message.success('User information updated successfully');
   }
   message.error('An error occurred while updating user information');
 }
+
 </script>
 <template>
     
@@ -49,9 +73,14 @@ const onFinish = async (values) => {
         </template>
         </a-input>
         </a-form-item>
-
-        
-
+       <a-upload
+        :file-list="fileList"
+        :before-upload="beforeUpload"
+        list-type="picture"
+        @change="handleChange"
+        >
+        <a-button>Subir Foto</a-button>
+         </a-upload>
         <a-form-item>
             <a-button type="primary" html-type="submit" :disabled="userStore.loadingUser" :loading="userStore.loadingUser">Actualizar Informacion</a-button>
         </a-form-item>
