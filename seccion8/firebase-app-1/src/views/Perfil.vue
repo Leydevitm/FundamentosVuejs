@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import { useUserStore } from '../stores/user'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
 const userStore = useUserStore();
 const onFinish = async (values) => {
   // console.log('Success:', values);
-//   const respuesta = await userStore.loginUser(formState.email, formState.password);
+  const respuesta = await userStore.updateUser(userStore.userData.displayName);
+  if(!respuesta){
+    return message.success('User information updated successfully');
+  }
+  message.error('An error occurred while updating user information');
 }
 </script>
 <template>
