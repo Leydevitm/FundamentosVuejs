@@ -23,6 +23,7 @@ watch(
         :style="{ lineHeight: '64px' }"
     >
       <a-menu-item key="home" v-if="userStore.userData"> <router-link to="/" >Home</router-link></a-menu-item>
+      <a-menu-item key="perfil" v-if="userStore.userData"> <router-link to="/perfil" >Perfil</router-link></a-menu-item>
       <a-menu-item key="login" v-if="!userStore.userData"> <router-link to="/login" v-if="!userStore.userData">Login</router-link> </a-menu-item>  
       <a-menu-item key="register" v-if="!userStore.userData"> <router-link to="/register" v-if="!userStore.userData">Register</router-link> </a-menu-item>
       <a-menu-item key="logout" @click="userStore.logoutUser" v-if="userStore.userData"> Logout</a-menu-item>

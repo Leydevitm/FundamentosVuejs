@@ -4,10 +4,11 @@ import {createUserWithEmailAndPassword,
         , signOut,
         onAuthStateChanged
 } from 'firebase/auth'
-import {auth} from '../firebaseConfig';
+import {auth,db} from '../firebaseConfig';
 import router from '../router';
 import { useDatabaseStore } from './database';
-
+import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
+let unsubscribe = null;
 
 export const useUserStore = defineStore('userStore',{
     state:()=>({
@@ -33,11 +34,38 @@ export const useUserStore = defineStore('userStore',{
                 this.loadingUser = false;
             }
         },
+        async setUser(user){
+            try {
+                  const docRef= doc(db,"users",user.uid);
+            const docSpan = await getDoc(docRef);
+            if(docSpan.exists()){
+               
+                 this.userData={...docSpan.data()}
+            }else{
+               
+                await setDoc(docRef,{
+                    email:user.email,
+                    uid:user.uid,
+                    displayName: user.displayName,
+                    photoURL:user.photoURL
+                });
+                this.userData={
+                    email:user.email,
+                    uid:user.uid,
+                    displayName: user.displayName,
+                    photoURL:user.photoURL
+                }
+            }
+            } catch (error) {
+                console.log(error)
+            }
+
+        },
         async loginUser(email,password){
             this.loadingUser = true;
             try {
-            const {user} = await signInWithEmailAndPassword(auth,email,password)
-             this.userData={email:user.email,uid:user.uid}
+            await signInWithEmailAndPassword(auth,email,password)
+            // this.setUser(user);
               router.push('/');
             } catch (error) {
                 console.log(error.code)
@@ -59,11 +87,11 @@ export const useUserStore = defineStore('userStore',{
         },
         currentUser(){
   return new Promise((resolve,reject) => {
-     const unsubscribe = onAuthStateChanged(
+     unsubscribe = onAuthStateChanged(
       auth, 
-      (user) => {
+     async (user) => {
         if(user){
-          this.userData = { email:user.email, uid:user.uid };
+          await this.setUser(user);
         }else{
           this.userData = null;
           const databaseStore = useDatabaseStore();
@@ -73,7 +101,12 @@ export const useUserStore = defineStore('userStore',{
       }, 
       e => reject(e)
     );
+
+    // unsubscribe();
   });
+},
+if (unsubscribe) {
+  unsubscribe(); 
 }
 
     },
