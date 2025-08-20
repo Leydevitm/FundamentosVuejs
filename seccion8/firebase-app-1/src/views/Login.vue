@@ -38,11 +38,11 @@ const onFinishFailed = (errorInfo: any) => {
 </script>
 
 <template>
+  <h1 class="text-center">Login</h1>
     <a-row>
       <a-col :xs="{span:24}" :sm="{span:12, offset:6}">
 
-     
-       <a-form 
+       <a-form
        :model="formState"
         name="basicLogin"
         autocomplete="off"
@@ -80,7 +80,7 @@ const onFinishFailed = (errorInfo: any) => {
 
        </a-form>
         </a-col>
-        
+
        </a-row>
    
 

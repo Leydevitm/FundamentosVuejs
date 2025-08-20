@@ -36,7 +36,7 @@ watch(
     </a-layout-header>
    
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
-     <div :style="{ background: '#fff', padding: '24px', minHeight: '380px' }">
+     <div class="container">
      <div v-if="userStore.loadingUserSession">loading user...</div>
      <router-view></router-view>
      </div>
@@ -46,7 +46,7 @@ watch(
     </a-layout>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;
@@ -60,5 +60,16 @@ watch(
 
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
+}
+</style> -->
+
+<style>
+.container {
+  padding: 24px;
+  background-color: #fff;
+  min-height: calc(100vh - 64px);
+}
+.text-center{
+  text-align: center;
 }
 </style>

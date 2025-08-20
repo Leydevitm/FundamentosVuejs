@@ -23,7 +23,7 @@ const cancel = (id) => {
 
 <template>
     <div>
-        <h1>Home</h1>
+          <h1 class="text-center">Home</h1>
        <p>{{ userStore.userData?.email }}</p>
 
        <add-form></add-form>
