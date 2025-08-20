@@ -12,11 +12,11 @@ const formState = reactive<FormState>({
 });
 
 const onFinish = async (values: any) => {
-  console.log('Success:', values);
+  // console.log('Success:', values);
   const respuesta = await userStore.loginUser(formState.email, formState.password);
 
   if(!respuesta){
-    return 
+    return message.success('Login successful');
   }
   switch(respuesta){
      case 'auth/invalid-credential':
