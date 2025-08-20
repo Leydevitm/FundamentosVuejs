@@ -92,6 +92,7 @@ export const useDatabaseStore = defineStore('database', {
             }
         },
         async deleteUrl(id) {
+            this.loading = true;
         try {
             const docRef = doc(db, 'urls', id);
             const docSnap = await getDoc(docRef);
@@ -104,7 +105,10 @@ export const useDatabaseStore = defineStore('database', {
             await deleteDoc(docRef);
             this.documents = this.documents.filter(item => item.id !== id);
         } catch (error) {
-            console.error("Error deleting document: ", error);
+            //console.error("Error deleting document: ", error.code);
+            return error.message;
+        }finally{
+             this.loading = false;
         }
     },
 },
