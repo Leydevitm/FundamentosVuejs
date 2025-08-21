@@ -19,6 +19,30 @@ return message.error(error);
 const cancel = (id) => {
   message.error('No eliminado');
 };
+
+const copiarPortapapeles= async(id)=>{
+  if(!navigator.clipboard){
+    return message.error('No se puede copiar');
+  }
+  const path = `${window.location.origin}/${id}`;
+  const res = await navigator.clipboard.writeText(path);
+  if(res){
+     message.error('No se pudo copiar');
+    
+  }else{
+   message.success('Copiado al portapapeles');
+  }
+
+  // navigator.clipboard.writeText(content)
+  // .then(()=>{
+  //   message.success('Copiado al portapapeles');
+  // })
+  // .catch((err)=>{
+  //   message.error('No se pudo copiar');
+  // })
+
+}
+
 </script>
 
 <template>
@@ -45,6 +69,7 @@ const cancel = (id) => {
         <a-button danger :disabled="userStore.loadingUser" :loading="userStore.loadingUser">Eliminar</a-button>
     </a-popconfirm>
        <a-button type="primary" @click="router.push(`/editar/${item.id}`)">Editar</a-button>
+       <a-button type="" @click="copiarPortapapeles(item.id)">Copiar</a-button>
         </a-space>
        </template>
        <p>  {{ item.name }}</p>
