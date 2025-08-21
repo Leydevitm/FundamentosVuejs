@@ -5,10 +5,12 @@ import {createUserWithEmailAndPassword,
         onAuthStateChanged,
         updateProfile
 } from 'firebase/auth'
-import {auth,db} from '../firebaseConfig';
+import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
+import {auth,db, storage} from '../firebaseConfig';
+
 import router from '../router';
 import { useDatabaseStore } from './database';
-import { doc, getDoc, setDoc } from 'firebase/firestore/lite';
 let unsubscribe = null;
 
 export const useUserStore = defineStore('userStore',{
@@ -35,6 +37,22 @@ export const useUserStore = defineStore('userStore',{
                 this.loadingUser = false;
             }
         },
+        async updateImg(imagen){
+            try {
+                console.log(imagen);
+                const storageRef =ref(storage,`${this.userData.uid}/perfil`);
+                await uploadBytes(storageRef, imagen.originFileObj)
+                const photoURL =await getDownloadURL(storageRef)
+                await updateProfile(auth.currentUser,{
+                    photoURL,
+                });
+                this.setUser(auth.currentUser);
+            } catch (error) {
+                console.log(error);
+                return error.code;
+            }
+
+        },
         async updateUser(displayName){
             try {
                 await updateProfile(auth.currentUser,{
@@ -54,8 +72,8 @@ export const useUserStore = defineStore('userStore',{
         },
         async setUser(user){
             try {
-                  const docRef= doc(db,"users",user.uid);
-            // const docSpan = await getDoc(docRef);
+            const docRef= doc(db,"users",user.uid);
+            
             this.userData={
                     email:user.email,
                     uid:user.uid,

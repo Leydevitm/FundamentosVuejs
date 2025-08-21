@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import {getAuth} from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore/lite';
+import { getStorage } from "firebase/storage";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDmcLf1AiQPUw6zDm6SilJGxA4kg4mIMyQ",
   authDomain: "vue3-2025-7ca7c.firebaseapp.com",
@@ -12,9 +14,9 @@ const firebaseConfig = {
 };
 
 
-initializeApp(firebaseConfig);
+const firebaseApp=initializeApp(firebaseConfig);
 
 const auth = getAuth();
 const db = getFirestore();
-
-export {auth, db};
+const storage = getStorage(firebaseApp);
+export {auth, db, storage};
