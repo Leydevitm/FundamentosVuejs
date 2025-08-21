@@ -1,4 +1,4 @@
-import {collection,addDoc,doc,getDoc,deleteDoc, query,where,getDocs,updateDoc} from 'firebase/firestore/lite';
+import {collection,addDoc,doc,getDoc,deleteDoc, query,where,getDocs,updateDoc, setDoc} from 'firebase/firestore/lite';
 import { defineStore } from 'pinia';
 import {db} from '../firebaseConfig';
 import {auth} from '../firebaseConfig' 
@@ -46,10 +46,10 @@ export const useDatabaseStore = defineStore('database', {
                     short:nanoid(6),
                     user: auth.currentUser.uid,
                 }
-                const docRef = await addDoc(collection(db, 'urls'),objetoDoc) ;
+                const docRef = await setDoc(doc(db, 'urls', objetoDoc.short), objetoDoc);
                     this.documents.push({
                         ...objetoDoc,
-                        id: docRef.id,  
+                        id: objetoDoc.short,  
                     });
             } catch (error) {
                 console.error("Error adding document: ", error.code);
