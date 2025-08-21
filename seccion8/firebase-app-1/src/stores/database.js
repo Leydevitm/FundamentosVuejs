@@ -13,6 +13,22 @@ export const useDatabaseStore = defineStore('database', {
         loading:false
     }),
     actions: {
+        async getURL(id){
+             try {
+                const docRef = doc(db, 'urls', id);
+                const docSpan = await getDoc(docRef);
+                 if (!docSpan.exists()) {
+                    return false;
+                }
+               
+                return docSpan.data().name;
+
+            } catch (error) {
+                console.log(error);
+                return false;
+            }
+
+        },
         async getUrls() {
             if(this.documents.length !== 0){
                 return;

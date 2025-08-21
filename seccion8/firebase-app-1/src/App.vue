@@ -39,7 +39,7 @@ watch(
     <a-layout-content :style="{ padding: '0 50px', marginTop: '64px' }">
      <div class="container">
      <div v-if="userStore.loadingUserSession">loading user...</div>
-     <router-view></router-view>
+     <router-view v-else></router-view>
      </div>
     </a-layout-content>
    
