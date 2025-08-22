@@ -1,7 +1,6 @@
-import mongoose from 'mongoose';
-import {Schema,model}from 'mongoose';
-
-const userSchema = new Schema({
+import mongoose from "mongoose";
+import bcryptjs from 'bcryptjs';
+const userSchema = new mongoose.Schema({
     
     email: { 
         type: String, 
@@ -17,6 +16,24 @@ const userSchema = new Schema({
         
     }
 });
+userSchema.pre("save", async  function(next){
+    const user = this;
+    if(!user.isModified("password")) return next();
+    try {
+        const salt =await bcryptjs.genSalt(10)
+        user.password = await bcryptjs.hash(user.password, salt)
+        next()
+    } catch (error) {
+      console.log(error);
+        throw new Error('Error al encriptar la contraseña');
+    }
 
-const User = model('user', userSchema);
+});
+
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    // const user = this;
+    return await bcryptjs.compare(candidatePassword, this.password);
+};
+
+const User = mongoose.model('User', userSchema);
 export default User;
