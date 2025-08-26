@@ -5,7 +5,8 @@ export const generateToken = (uid)=>{
     const expiresIn=60*15
 
     try {
-        jwt.sign({uid}, process.env.JWT_SECRET, {expiresIn});
+        const token = jwt.sign({uid}, process.env.JWT_SECRET, {expiresIn});
+        return {token, expiresIn};
     } catch (error) {
         console.log(error);
         
@@ -26,12 +27,11 @@ export const generateRefreshToken = (uid,res)=>{
     }
 }
 
-export const errorsValidateToken = (error)=>{
-    const TokenVerificationErrors={
-        "Invalid signature": "La firma del token no es válida",
-        "jwt expired": "El token ha expirado",
-        "invalid token": "El token no es válido",
-        "No Bearer": "No se encontró el prefijo Bearer",
-    };
-    return {error: TokenVerificationErrors[error.message] || error.message};
-}
+export const tokenVerificationErrors={
+            "Invalid signature": "La firma del token no es válida",
+            "jwt expired": "El token ha expirado",
+            "invalid token": "El token no es válido",
+            "No Bearer": "No se encontró el prefijo Bearer",
+        };
+
+

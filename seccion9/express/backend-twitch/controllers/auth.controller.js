@@ -9,8 +9,9 @@ export const register = async(req,res)=>{
         if(user) throw ({code: 11000});
          user = new User({email,password});
          await user.save();
-
-        return res.json({ok: 'Register'});
+        const {token, expiresIn} =generateToken(user.id)
+        generateRefreshToken(user.id,res);
+        return res.status(201).json({ok: true});
     } catch (error) {
         console.log(error);
         //Alternativa por efecto mongoose
@@ -30,6 +31,7 @@ export const login = async(req,res)=>{
 
     const respuestaPassword = await user.comparePassword(password);
         if(!respuestaPassword) return res.status(403).json({error: 'Contraseña incorrecta'});
+
         const {token, expiresIn} =generateToken(user.id)
         generateRefreshToken(user.id,res);
      return res.json({token, expiresIn});
@@ -54,24 +56,16 @@ export const infoUser = async(req,res)=>{
 
 export const refreshToken = (req,res)=>{
     try {
-        const refreshTokenCookie = req.cookies.refreshToken
-        if(!refreshTokenCookie) throw new Error("No existe el token");
-        const {uid} =jwt.verify(refreshTokenCookie, process.env.JWT_REFRESH);
-        const {token, expiresIn} =generateToken(uid)
+       
+        const {token, expiresIn} =generateToken(req.uid)
         return res.json({token,expiresIn});
 
     } catch (error) {
         console.log(error);
-         const TokenVerificationErrors={
-            "Invalid signature": "La firma del token no es válida",
-            "jwt expired": "El token ha expirado",
-            "invalid token": "El token no es válido",
-            "No Bearer": "No se encontró el prefijo Bearer",
-        };
-        return res.status(401)
-        .send({error: TokenVerificationErrors[error.message] || error.message});
+          return res.status(500).json({error: 'Error al obtener la información del usuario'});
+    
     }
-    // const token = req.cookies.refreshToken
+    
 };
 
 export const logout = (req,res)=>{
