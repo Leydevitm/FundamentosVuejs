@@ -69,10 +69,6 @@ export const refreshToken = (req,res)=>{
 };
 
 export const logout = (req,res)=>{
-    try {
-        res.clearCookie("refreshToken");
-        return res.json({ok: 'Logout exitoso'});
-    } catch (error) {
-        return res.status(500).json({error: 'Error al cerrar sesión'});
-    }
+    res.clearCookie("refreshToken");
+    res.json({ok:true});
 }
