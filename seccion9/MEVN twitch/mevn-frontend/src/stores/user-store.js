@@ -6,12 +6,12 @@ export const useUserStore = defineStore("user",()=> {
      const token =ref(null);
      const expiresIn =ref(null);
 
-    const access = async () => {
+    const access = async (email,password) => {
   try{
 
 const res = await api.post('/auth/login',{
-  email: "anel@gmail.com",
-  password: "123123"
+  email: email,
+  password: password
  });
 
  token.value = res.data.token;
@@ -19,7 +19,45 @@ const res = await api.post('/auth/login',{
 sessionStorage.setItem('user', true);
  setTime()
 }catch(error){
-  console.log(error);
+  if(error.response){
+    console.log(error.response.data);
+    return error.response.data;
+    // console.log(error.response.status);
+    // console.log(error.response.headers);
+  }else if(error.request){
+    console.log(error.request);
+  }else{
+    console.log('Error', error.message);
+  }
+  console.log(error.config);
+}
+};
+
+   const register = async (email,password, repassword) => {
+  try{
+
+const res = await api.post('/auth/register',{
+  email: email,
+  password: password,
+  repassword:repassword
+ });
+
+ token.value = res.data.token;
+ expiresIn.value = res.data.expiresIn;
+sessionStorage.setItem('user', true);
+ setTime()
+}catch(error){
+  if(error.response){
+    console.log(error.response.data);
+    return error.response.data;
+    // console.log(error.response.status);
+    // console.log(error.response.headers);
+  }else if(error.request){
+    console.log(error.request);
+  }else{
+    console.log('Error', error.message);
+  }
+  console.log(error.config);
 }
 };
 
@@ -71,6 +109,7 @@ const resetStore=()=>{
        access,
        refreshToken,
        logout,
+       register,
 
      };
 });
