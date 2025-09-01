@@ -47,7 +47,7 @@ export default defineConfig((ctx) => {
       // publicPath: '/',
       // analyze: true,
        env: {
-        FRONT_URI: ctx.dev ?"http://localhost:9000" :"",
+        FRONT_URI: ctx.dev ?"http://localhost:9000" :"https://mes-de-vuee.netlify.app/login",
         MY_API_REST: ctx.dev ? "http://localhost:5000/api/v1" :"",
        },
       // rawDefine: {}
