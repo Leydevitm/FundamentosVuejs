@@ -3,7 +3,7 @@
 
 import { defineConfig } from '#q-app/wrappers'
 
-export default defineConfig((/* ctx */) => {
+export default defineConfig((ctx) => {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -46,7 +46,10 @@ export default defineConfig((/* ctx */) => {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+       env: {
+        FRONT_URI: ctx.dev ?"http://localhost:9000" :"",
+        MY_API_REST: ctx.dev ? "http://localhost:5000/api/v1" :"",
+       },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -91,7 +94,7 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Dialog'],
+      plugins: ["Dialog", "Notify", "Loading"],
     },
 
     // animations: 'all', // --- includes all animations

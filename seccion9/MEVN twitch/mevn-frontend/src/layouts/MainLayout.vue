@@ -6,11 +6,11 @@
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
 
-        <q-btn color="dark" to="/" v-if="userStore.token">Inicio</q-btn>
+        <q-btn class="q-mr-sm" color="dark" to="/" v-if="userStore.token">Inicio</q-btn>
         <q-btn color="green" class="q-mr-sm" to="/login" @click="accessUser" v-if="!userStore.token">Login</q-btn>
          <q-btn color="green" class="q-mr-sm" to="/register" @click="accessUser" v-if="!userStore.token">Register</q-btn>
-        <q-btn color="red" @click="logout" v-if="userStore.token">Logout</q-btn>
-        <q-btn color="orange" to="/protected" v-if="userStore.token">Protected</q-btn>
+        <q-btn class="q-mr-sm" color="red" @click="logout" v-if="userStore.token">Logout</q-btn>
+        <q-btn class="q-mr-sm" color="orange" to="/protected" v-if="userStore.token">Protected</q-btn>
       </q-toolbar>
     </q-header>
 

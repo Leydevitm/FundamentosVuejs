@@ -68,7 +68,7 @@ export const removeLink = async(req,res)=>{
 
         if(!link.uid.equals(req.uid)) return res.status(401).json({error: "No le pertenece ese id"})
 
-        await link.remove();
+        await link.deleteOne();
         return res.json({ link });
     } catch (error) {
         console.log(error);
