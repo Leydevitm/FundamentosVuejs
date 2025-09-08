@@ -12,8 +12,8 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 h1{
-    color:blue;
+    color:peru;
 }
 </style>
