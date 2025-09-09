@@ -40,8 +40,19 @@ export default createStore({
     }
   },
   actions: {
-    cargarLocalStorage({commit}){
-    
+   async cargarLocalStorage({commit}){
+     try {
+      const res = await fetch('https://formularioapi-abc56-default-rtdb.firebaseio.com/tareas.json')
+        const dataDB = await res.json()
+        const arrayTareas = []
+        for (let id in dataDB){
+          arrayTareas.push(dataDB[id])
+        }
+        commit('cargar', arrayTareas)
+
+     } catch (error) {
+      console.log(error)
+     }
     },
     async setTareas({commit}, tarea){
       try {
@@ -66,9 +77,19 @@ export default createStore({
     setTarea({commit}, id){
       commit('tarea', id)
     },
-    updateTarea({commit} , tarea){
-     commit('update', tarea)
+    async updateTarea({commit} , tarea){
+     try {
+        const res = await fetch(`https://formularioapi-abc56-default-rtdb.firebaseio.com/tareas/${tarea.id}.json`, {
+          method: 'PATCH',
+          body: JSON.stringify(tarea)
+        })
+        const dataDB = await res.json()
+        commit('update', dataDB)
+      } catch (error) {
+        console.log(error)
+      }
     }
+
   },
   
   modules: {
