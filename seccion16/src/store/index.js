@@ -71,8 +71,16 @@ export default createStore({
       }
       commit('set', tarea)
     },
-    deleteTareas({commit}, id){
-      commit('eliminar', id)
+    async deleteTareas({commit}, id){
+        try {
+        await fetch(`https://formularioapi-abc56-default-rtdb.firebaseio.com/tareas/${id}.json`, {
+          method: 'DELETE',
+        })
+        commit('eliminar', id)
+      } catch (error) {
+        console.log(error)
+      }
+
     },
     setTarea({commit}, id){
       commit('tarea', id)
