@@ -1,11 +1,11 @@
 <template>
     <input 
+
         type="text"
         placeholder="Ingrese País"
         class="form-control my-3"
         v-model="texto"
-        @keyup="procesarInput"
-    >
+        @keyup="procesarInput">
 </template>
 
 <script>
