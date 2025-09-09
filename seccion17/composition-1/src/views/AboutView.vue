@@ -2,9 +2,11 @@
   <div class="about">
    <Titulo :contador="contador" :color="color"></Titulo>
    <!-- <h1 :style="{'color':color}">Contador: {{ contador }}</h1> -->
-    <button @click="aumentar()">+</button>
-     <button @click="disminir()">-</button>
+    <!-- <button @click="aumentar()">+</button>
+     <button @click="disminir()">-</button> -->
      <hr>
+     <Btn :textoBoton="'Aumentar'" @accion="aumentar"></Btn>
+      <Btn :textoBoton="'Disminuir'" @accion="disminuir"></Btn>
      <input type="text" v-model="texto">
      <p>{{ texto }}</p>
   </div>
@@ -12,10 +14,12 @@
 
 <script >
 import Titulo from '../components/Titulo.vue'
+import Btn from '../components/Btn.vue'
 import {computed, ref} from 'vue'
  export default{
   components:{
     Titulo,
+    Btn
   },
   setup(){
     
@@ -24,7 +28,7 @@ import {computed, ref} from 'vue'
     const aumentar =()=>{
       contador.value++
     }
-    const disminir =()=>{
+    const disminuir =()=>{
       contador.value--
     }
 
@@ -36,7 +40,7 @@ import {computed, ref} from 'vue'
     }
     })
 
-  return {contador,aumentar,disminir,color,texto}
+  return {contador,aumentar,disminuir,color,texto}
     }
   
   }
