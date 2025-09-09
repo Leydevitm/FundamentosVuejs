@@ -16,7 +16,13 @@ const routes = [
     path: '/editar/:id',
     name: 'Editar',
     component: () => import(/* webpackChunkName: "about" */ '../views/Editar.vue')
-  }
+  },
+   {
+    path: '/registro',
+    name: 'Registro',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Registro.vue')
+  },
+  
 ]
 
 const router = createRouter({
@@ -24,4 +30,16 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // console.log(to.meta.rutaProtegida)
+  if (to.meta.rutaProtegida) {
+    if (store.getters.usuarioAutenticado) {
+      next()
+    } else {
+      next('/ingreso')
+    }
+  } else {
+    next()
+  }
+})
 export default router

@@ -9,11 +9,15 @@ export default createStore({
         categorias:[],
         estado:'',
         numero:0
-    }
+    },
+    usuario:null
   },
   getters: {
   },
   mutations: {
+     setUser(state, payload) {
+      state.user = payload
+    },
     cargar(state,payload){
     state.tareas = payload
     },
@@ -40,6 +44,56 @@ export default createStore({
     }
   },
   actions: {
+     cerrarSesion({ commit }) {
+      commit('setUser', null)
+      router.push('/ingreso')
+      localStorage.removeItem('usuario')
+    },
+    async ingresoUsuario({ commit }, usuario) {
+      try {
+        const res = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: usuario.email,
+            password: usuario.password,
+            returnSecureToken: true
+          })
+        })
+        const userDB = await res.json()
+        console.log('userDB', userDB)
+        if (userDB.error) {
+          return console.log(userDB.error)
+        }
+        commit('setUser', userDB)
+        router.push('/')
+        localStorage.setItem('usuario', JSON.stringify(userDB))
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async registrarUsuario({ commit }, usuario) {
+      try {
+        const res = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]', {
+          method: 'POST',
+          body: JSON.stringify({
+            email: usuario.email,
+            password: usuario.password,
+            returnSecureToken: true
+          })
+        })
+        const userDB = await res.json()
+        console.log(userDB)
+        if (userDB.error) {
+          console.log(userDB.error)
+          return
+        }
+        commit('setUser', userDB)
+        router.push('/')
+        localStorage.setItem('usuario', JSON.stringify(userDB))
+      } catch (error) {
+        console.log(error)
+      }
+    },
    async cargarLocalStorage({commit}){
      try {
       const res = await fetch('https://formularioapi-abc56-default-rtdb.firebaseio.com/tareas.json')
@@ -98,6 +152,11 @@ export default createStore({
       }
     }
 
+  },
+  getters: {
+    usuarioAutenticado(state) {
+      return !!state.user
+    }
   },
   
   modules: {
