@@ -19,7 +19,7 @@
 <script>
 import TareaItem from './TareaItem.vue'
 import TareaForm from './TareaForm.vue'
-import { provide, ref } from 'vue';
+import { provide, ref, watchEffect } from 'vue';
 
 export default {
     components:{
@@ -31,6 +31,12 @@ export default {
     const tareas = ref([])
 
     provide('tareas', tareas)
+    if(localStorage.getItem('tareas')){
+        tareas.value = JSON.parse(localStorage.getItem('tareas'))
+    }
+     watchEffect(()=>{
+        localStorage.setItem('tareas', JSON.stringify(tareas.value))
+    })
 
     return{tareas}
    }
