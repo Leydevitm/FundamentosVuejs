@@ -1,0 +1,31 @@
+<template>
+<div>
+  <h1>App Contador {{ contador }}</h1>
+  <ContadorUno></ContadorUno>
+  <ContadorAccion></ContadorAccion>
+  
+</div>
+</template>
+  
+<script>
+import { ref,provide } from 'vue';
+import ContadorUno from './components/ContadorUno.vue'
+import ContadorAccion from './components/ContadorAccion.vue';
+export default {
+  name: 'App',
+
+  components: {
+    ContadorUno,
+    ContadorAccion,
+  },
+  setup(){
+    const contador = ref(0)
+    provide('contador', contador)
+   
+    return{
+     contador
+    }
+  }
+}
+</script>
+
