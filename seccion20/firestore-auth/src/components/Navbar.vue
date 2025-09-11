@@ -9,10 +9,26 @@
             <div>
                 <button class="btn btn-success" 
                 @click="signIn"
-                v-if="!isAuthenticated">Acceder</button>
-                <button class="btn btn-danger" 
+                v-if="!isAuthenticated"
+                >Acceder</button>
+
+            <div v-else>
+              <router-link to="/crud"
+              class="btn btn-success mx-1">
+                CRUD
+              </router-link>
+
+               <router-link to="/perfil"
+              class="btn btn-success mx-1">
+                Perfil
+              </router-link>
+              </div>
+
+                  <button class="btn btn-danger mx-1" 
                 @click="signOut"
-                v-else>Salir</button>
+              >Salir</button>
+                
+                
             </div>
         </div>
     </nav>

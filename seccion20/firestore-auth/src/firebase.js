@@ -39,4 +39,13 @@ const auth = firebase.auth()
 const db = firebase.firestore()
 const marcaTiempo = firebase.firestore.FieldValue.serverTimestamp()
 
+firebase.getCurrentUser =()=>{
+  return new Promise((resolve,reject)=>{
+    const unsuscribe = firebase.auth().onAuthStateChanged(user =>{
+      unsuscribe()
+      resolve(user)
+    },reject)
+
+  })
+}
 export { auth, db, marcaTiempo, firebase }
