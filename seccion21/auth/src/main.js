@@ -5,6 +5,22 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+import {auth} from './firebase'
+
+auth.onAuthStateChanged(user => {
+  if(user){
+    console.log(user)
+    const detectarUsuario={
+      email:user.email,
+      uid:user.uid
+    }
+    store.dispatch('detectarUsuario',detectarUsuario)
+  }else{
+    console.log(user)
+    store.dispatch('detectarUsuario', user)
+  }
+})
+
 new Vue({
   router,
   store,

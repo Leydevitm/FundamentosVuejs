@@ -24,18 +24,56 @@ export default new Vuex.Store({
       auth.createUserWithEmailAndPassword(usuario.email, usuario.password)
         .then(res => {
           console.log(res)
-          const usuario = {
+          const usuarioCreado = {
             email: res.user.email,
             uid: res.user.uid
           }
-          commit('setUsuario', usuario)
+          commit('setUsuario', usuarioCreado)
           router.push('/')
         })
         .catch(error => {
           console.log(error)
           commit('setError', error)
         })
+    },
+    ingresoUsuario({commit}, usuario){
+      auth.signInWithEmailAndPassword(usuario.email,usuario.password)
+      .then(res => {
+        console.log(res)
+         const usuarioLogeado = {
+            email: res.user.email,
+            uid: res.user.uid
+          }
+          commit('setUsuario', usuarioLogeado)
+          router.push('/')
+      })
+      .catch(error =>{
+        console.log(error)
+        commit('setError', error)
+      })
+
+    },
+    cerrarSesion({commit}){
+      auth.signOut()
+      .then(()=>{
+        router.push('/acceso')
+      })
+
+    },
+    detectarUsuario({commit}, usuario){
+    commit('setUsuario', usuario)
+}
+  },
+  getters:{
+    existeUsuario(state){
+      //  if(state.usuario === null){
+      //       return false
+      //   }else{
+      //       return true
+      //   }
+       return state.usuario !== null
     }
+
   },
   modules: {
   }
