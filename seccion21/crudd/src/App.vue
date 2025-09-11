@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
     <div class="text-center">
-      <router-link :to="{name: 'inicio'}">
+      <router-link to='/'>
         <img src="@/assets/logo.png" alt="">
       </router-link>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Editar</h1>
-    {{id}} - {{tarea}}
+    {{tarea.id}} - {{tarea.nombre}}
     <form @submit.prevent="editarTarea(tarea)" class="form-inline">
       <div class="input-group mb-2 mr-sm-2">
         <div class="input-group-prepend">
@@ -24,10 +24,13 @@ export default {
     }
   },
   methods:{
-    ...mapActions(['getTarea','editarTarea'])
+    ...mapActions(['getTarea','editarTarea']),
+    submit() {
+      this.editarTarea(this.tarea) // 👈 ojo, aquí usas `this.tarea`
+    }
   },
   created(){
-    this.getTarea(this.id)
+    this.getTarea(this.$route.params.id)
   },
   computed:{
     ...mapState(['tarea'])

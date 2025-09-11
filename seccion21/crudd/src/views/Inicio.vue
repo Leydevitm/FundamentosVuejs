@@ -10,7 +10,7 @@
         {{item.id}} - {{item.nombre}}
         <div class="float-right">
           <router-link class="btn btn-warning btn-sm mr-2" 
-          :to="`/editar/${item.id}`">
+          :to="{name: 'Editar', params:{id: item.id}}">
             Editar
           </router-link>
           <button @click="eliminarTarea(item.id)" class="btn btn-danger btn-sm">Eliminar</button>
