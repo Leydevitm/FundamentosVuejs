@@ -25,6 +25,9 @@ export default new Vuex.Store({
   },
   setTarea(state, payload){
   state.tarea = payload
+},
+setEliminarTarea(state, payload){
+  state.tareas = state.tareas.filter(item => item.id !== payload)
 }
   },
   actions: {
@@ -117,7 +120,14 @@ agregarTarea({commit, state}, nombreTarea){
     },
     detectarUsuario({commit}, usuario){
     commit('setUsuario', usuario)
-}
+},
+ eliminarTarea({commit, state}, id){
+    db.collection(state.usuario.email).doc(id).delete()
+    .then(() => {
+        commit('setEliminarTarea', id)
+    })
+    .catch(error => console.log(error))
+},
   },
   getters:{
     existeUsuario(state){
