@@ -2,16 +2,15 @@
     <div>
         <h1>Ruta protegida</h1>
          <router-link to='/agregar'>
-            <button>Agregar</button>
+            <button class="btn btn-primary mb-2">Agregar</button>
         </router-link>
-        <!-- <p>{{ usuario.email }}</p> -->
-         <ul>
-            <li v-for="(item, index) in tareas" :key="index">
+         <ul class="list-group">
+            <li v-for="(item, index) in tareas" :key="index" class="list-group-item">
                 {{item.id}} - {{item.nombre}}
-                <router-link :to="{name: 'Editar', params: {id: item.id}}">
-                    <button>Editar</button>
+                <router-link :to="{name: 'Editar', params: {id: item.id}}" class="float-right ml-2">
+                    <button class="btn btn-warning">Editar</button>
                 </router-link>
-                   <button @click="eliminarTarea(item.id)">Eliminar</button>
+                   <button class="btn btn-danger float-right" @click="eliminarTarea(item.id)">Eliminar</button>
             </li>
         </ul>
     </div>
