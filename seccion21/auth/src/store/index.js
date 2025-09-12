@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import {auth} from '../firebase'
+import {auth ,db} from '../firebase'
 import router from '../router'
 
 Vue.use(Vuex)
@@ -9,7 +9,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     usuario: null,
-    error: null
+    error: null,
+    tareas: [],
+    tarea:{nombre: '', id:''}
   },
   mutations: {
     setUsuario(state, payload){
@@ -17,9 +19,57 @@ export default new Vuex.Store({
     },
     setError(state, payload){
       state.error = payload
-    }
+    },
+      setTareas(state, payload){
+    state.tareas = payload
+  },
+  setTarea(state, payload){
+  state.tarea = payload
+}
   },
   actions: {
+
+      getTareas({commit, state}){
+      const tareas = []
+      db.collection(state.usuario.email).get()
+      .then(res => {
+          res.forEach(doc => {
+              let tarea = doc.data()
+              tarea.id = doc.id
+              tareas.push(tarea)
+          })
+          commit('setTareas', tareas)
+      })
+      .catch(error => console.log(error))
+  },
+  getTarea({commit, state}, id){
+  db.collection(state.usuario.email).doc(id).get()
+  .then(doc => {
+      let tarea = doc.data()
+      tarea.id = doc.id
+      commit('setTarea', tarea)
+  })
+  .catch(error => console.log(error))
+},
+editarTarea({commit, state}, tarea){
+  db.collection(state.usuario.email).doc(tarea.id).update({
+      nombre: tarea.nombre
+  })
+  .then(() => {
+      router.push({name: 'Inicio'})
+  })
+  .catch(error => console.log(error))
+},
+agregarTarea({commit, state}, nombreTarea){
+    db.collection(state.usuario.email).add({
+        nombre: nombreTarea
+    })
+    .then(doc => {
+        router.push({name: 'Inicio'})
+    })
+    .catch(error => console.log(error))
+},
+
     crearUsuario({commit}, usuario){
       auth.createUserWithEmailAndPassword(usuario.email, usuario.password)
         .then(res => {
@@ -28,8 +78,13 @@ export default new Vuex.Store({
             email: res.user.email,
             uid: res.user.uid
           }
-          commit('setUsuario', usuarioCreado)
-          router.push('/')
+          db.collection(res.user.email).add({
+            nombre: 'tarea de ejemplo'
+          }).then(doc =>{
+               commit('setUsuario', usuarioCreado)
+               router.push('/')
+               }).catch(error => console.log(error))
+       
         })
         .catch(error => {
           console.log(error)
