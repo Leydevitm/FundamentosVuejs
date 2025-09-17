@@ -11,7 +11,8 @@ export default new Vuex.Store({
     usuario: null,
     error: null,
     tareas: [],
-    tarea:{nombre: '', id:''}
+    tarea:{nombre: '', id:''},
+    carga:false
   },
   mutations: {
     setUsuario(state, payload){
@@ -28,11 +29,16 @@ export default new Vuex.Store({
 },
 setEliminarTarea(state, payload){
   state.tareas = state.tareas.filter(item => item.id !== payload)
+},
+cargarFirebase(state,payload){
+  state.carga = payload
 }
   },
   actions: {
 
       getTareas({commit, state}){
+        commit('cargarFirebase', true)
+         const usuario = auth.currentUser  
       const tareas = []
       db.collection(state.usuario.email).get()
       .then(res => {
@@ -41,10 +47,30 @@ setEliminarTarea(state, payload){
               tarea.id = doc.id
               tareas.push(tarea)
           })
-          commit('setTareas', tareas)
+          setTimeout(()=>{
+          commit('cargarFirebase', false)
+          },2000)
+         
       })
+       commit('setTareas', tareas)
       .catch(error => console.log(error))
   },
+  
+  //     getTareas({commit}){
+  //       commit('cargarFirebase', true)
+  //       const usuario = firebase.auth().currentUser
+  //     const tareas = []
+  //     db.collection(usuario.email).get()
+  //     .then(snapshot => {
+  //         snapshot.forEach(doc => {
+  //             let tarea = doc.data()
+  //             tarea.id = doc.id
+  //             tareas.push(tarea)
+  //         })  
+  //     })
+  //     commit('cargarFirebase', false)
+  //         commit('setTareas', tareas)
+  // },
   getTarea({commit, state}, id){
   db.collection(state.usuario.email).doc(id).get()
   .then(doc => {
