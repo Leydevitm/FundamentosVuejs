@@ -58,7 +58,8 @@ export default {
       items: [
         { title: "Dashboard", icon: "fas fa-home", to: { name: "Home" } },
         { title: "Account", icon: "fas fa-user", to: { name: "Ingreso" } },
-        { title: "Admin", icon: "fas fa-cog", to: { name: "Admin" } }
+        { title: "Admin", icon: "fas fa-cog", to: { name: "Admin" } },
+        { title: "Chat", icon: "fas fa-comments", to: { name: "Chat" } }
       ]
     };
   },
