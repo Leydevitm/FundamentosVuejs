@@ -20,6 +20,12 @@ const router =  new Router({
       name: 'Ingreso',
       component: () => import('./views/IngresoView.vue')
     },
+     {
+      path: '/admin',
+      name: 'Admin',
+      component: () => import(/* webpackChunkName: "about" */ './views/AdminView.vue'),
+      meta: {requiresAuth: true}
+    },
 
   ]
 })
