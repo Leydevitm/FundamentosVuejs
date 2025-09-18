@@ -28,7 +28,20 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify' // <-- importa el objeto vuetify que creaste
 import router from './router'
 import store from './store'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import { auth } from "@/firebase";
+import vueChatScroll from 'vue-chat-scroll'
+
+
+Vue.use(vueChatScroll)
 Vue.config.productionTip = false
+
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    store.dispatch('setUsuario', user);  
+  }
+
 
 new Vue({
   router,
@@ -36,5 +49,5 @@ new Vue({
   vuetify, // <-- muy importante pasar la instancia
   render: h => h(App)
 }).$mount('#app')
-
+});
 
